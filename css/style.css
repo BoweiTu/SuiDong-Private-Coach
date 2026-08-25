@@ -1,0 +1,49 @@
+/* ==========================================================================
+   随动私教 - 自定义样式
+   说明：Tailwind 工具类承担了绝大部分样式，本文件仅补充
+        渐变文字/渐变背景、毛玻璃卡片、动画等自定义效果。
+   ========================================================================== */
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+}
+
+/* 渐变文字：用于标题高亮部分 */
+.gradient-text {
+  background: linear-gradient(90deg, #FF6B35, #2EC4B6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 渐变背景：用于品牌色按钮/Logo */
+.gradient-bg {
+  background: linear-gradient(135deg, #FF6B35, #2EC4B6);
+}
+
+/* 毛玻璃卡片：用于底部特性介绍区 */
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 缓慢脉冲动画 */
+.animate-pulse-slow {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* 向上滑入动画：区块切换时使用 */
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>随动私教 - AI智能体</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-[#1A1A2E] via-[#16213E] to-[#0F3460] text-white">
+  <nav class="sticky top-0 z-50 bg-black/20 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 gradient-bg rounded-full flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+        </div>
+        <span class="font-bold text-xl">随动私教</span>
+      </div>
+      <div class="flex gap-4">
+        <button onclick="showSection('training')" class="px-4 py-2 rounded-lg hover:bg-white/10 transition">训练计划</button>
+        <button onclick="showSection('nutrition')" class="px-4 py-2 rounded-lg hover:bg-white/10 transition">营养测算</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-6 py-12">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold mb-4">让每个人都能享受<span class="gradient-text">专业级健身指导</span></h1>
+      <p class="text-gray-400 text-lg">AI驱动的个性化私教与营养师，解决初学者专业性不足，满足有基础者的经济性定制需求</p>
+    </div>
+
+    <div id="training-section" class="animate-slide-up">
+      <div class="grid lg:grid-cols-3 gap-6">
+        <div class="bg-white rounded-2xl p-6 shadow-2xl">
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <svg class="w-6 h-6 text-[#FF6B35]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+            智能训练计划生成
+          </h2>
+
+          <div class="space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-2">各区域疲劳度打分（1-5分）</label>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-xs text-gray-500 mb-1">胸部</label>
+                  <input type="range" id="fatigue-chest" min="1" max="5" value="3" class="w-full accent-[#FF6B35]" oninput="updateFatigueValue('chest', this.value)">
+                  <span id="fatigue-chest-val" class="text-xs text-gray-400">3</span>
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-500 mb-1">肩部</label>
+                  <input type="range" id="fatigue-shoulders" min="1" max="5" value="3" class="w-full accent-[#FF6B35]" oninput="updateFatigueValue('shoulders', this.value)">
+                  <span id="fatigue-shoulders-val" class="text-xs text-gray-400">3</span>
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-500 mb-1">背部</label>
+                  <input type="range" id="fatigue-back" min="1" max="5" value="3" class="w-full accent-[#FF6B35]" oninput="updateFatigueValue('back', this.value)">
+                  <span id="fatigue-back-val" class="text-xs text-gray-400">3</span>
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-500 mb-1">腿部</label>
+                  <input type="range" id="fatigue-legs" min="1" max="5" value="3" class="w-full accent-[#FF6B35]" oninput="updateFatigueValue('legs', this.value)">
+                  <span id="fatigue-legs-val" class="text-xs text-gray-400">3</span>
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-500 mb-1">肱二头肌</label>
+                  <input type="range" id="fatigue-arms-bicep" min="1" max="5" value="3" class="w-full accent-[#FF6B35]" oninput="updateFatigueValue('arms-bicep', this.value)">
+                  <span id="fatigue-arms-bicep-val" class="text-xs text-gray-400">3</span>
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-500 mb-1">肱三头肌</label>
+                  <input type="range" id="fatigue-arms-tricep" min="1" max="5" value="3" class="w-full accent-[#FF6B35]" oninput="updateFatigueValue('arms-tricep', this.value)">
+                  <span id="fatigue-arms-tricep-val" class="text-xs text-gray-400">3</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-2">可用时长（分钟）</label>
+              <input type="number" id="duration" value="45" min="15" max="120" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#FF6B35] text-gray-800">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-2">训练目标</label>
+              <select id="goal" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#FF6B35] text-gray-800">
+                <option value="muscle">增肌</option>
+                <option value="fat_loss">减脂</option>
+                <option value="shape">塑形</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-2">训练强度</label>
+              <select id="intensity" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#FF6B35] text-gray-800">
+                <option value="medium">适中</option>
+                <option value="low">低</option>
+                <option value="high">高强度</option>
+                <option value="extreme">魔鬼强度</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-2">训练场地</label>
+              <select id="location" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#FF6B35] text-gray-800">
+                <option value="gym">健身房</option>
+                <option value="home">居家</option>
+              </select>
+            </div>
+
+            <button onclick="generateTraining()" id="training-btn" class="w-full gradient-bg text-white py-2 rounded-lg font-medium hover:shadow-lg transition flex items-center justify-center gap-2">
+              <span>生成训练计划</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-2xl">
+          <h2 class="text-xl font-bold text-gray-800 mb-4">今日训练方案</h2>
+          <div id="training-result" class="space-y-3 max-h-[600px] overflow-y-auto">
+            <div class="text-center py-8 text-gray-400">
+              <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+              <p>点击左侧按钮生成训练方案</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-2xl flex flex-col">
+          <div class="p-4 border-b border-gray-100">
+            <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+              <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+              </svg>
+              AI私教问答
+            </h2>
+          </div>
+          <div id="chat-messages" class="flex-1 p-4 space-y-4 overflow-y-auto max-h-[480px]">
+            <div class="flex gap-3">
+              <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                </svg>
+              </div>
+              <div class="bg-gray-100 rounded-lg rounded-tl-none px-4 py-2">
+                <p class="text-sm text-gray-700">你好！我是你的AI私教，可以帮你解答动作细节、训练技巧等问题。比如："卧推的正确姿势是什么？"</p>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 border-t border-gray-100">
+            <div class="flex gap-2">
+              <input type="text" id="chat-input" placeholder="输入你的问题..." class="flex-1 px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 text-gray-800">
+              <button onclick="sendChatMessage()" id="chat-btn" class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="nutrition-section" class="hidden animate-slide-up mt-12">
+      <div class="grid lg:grid-cols-3 gap-6">
+        <div class="bg-white rounded-2xl p-6 shadow-2xl">
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <svg class="w-6 h-6 text-[#2EC4B6]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+            营养精准测算
+          </h2>
+
+          <div class="space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-2">餐食描述</label>
+              <input type="text" id="meal-input" placeholder="例如：一碗米饭+鸡胸肉+青菜" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2EC4B6] text-gray-800">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-2">餐型</label>
+              <select id="meal-type" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2EC4B6] text-gray-800">
+                <option value="lunch">午餐</option>
+                <option value="breakfast">早餐</option>
+                <option value="dinner">晚餐</option>
+                <option value="snack">加餐</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-2">健身目标</label>
+              <select id="nutrition-goal" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2EC4B6] text-gray-800">
+                <option value="muscle">增肌</option>
+                <option value="fat_loss">减脂</option>
+                <option value="shape">塑形</option>
+              </select>
+            </div>
+
+            <button onclick="calculateNutrition()" id="nutrition-btn" class="w-full bg-[#2EC4B6] text-white py-2 rounded-lg font-medium hover:shadow-lg transition flex items-center justify-center gap-2">
+              <span>测算营养</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-2xl">
+          <h2 class="text-xl font-bold text-gray-800 mb-4">营养测算结果</h2>
+          <div id="nutrition-result" class="space-y-3 max-h-[600px] overflow-y-auto">
+            <div class="text-center py-8 text-gray-400">
+              <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+              <p>输入餐食并点击测算</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-2xl flex flex-col">
+          <div class="p-4 border-b border-gray-100">
+            <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+              <svg class="w-6 h-6 text-[#2EC4B6]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+              AI营养师问答
+            </h2>
+          </div>
+          <div id="nutrition-chat-messages" class="flex-1 p-4 space-y-4 overflow-y-auto max-h-[480px]">
+            <div class="flex gap-3">
+              <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <svg class="w-4 h-4 text-[#2EC4B6]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div class="bg-gray-100 rounded-lg rounded-tl-none px-4 py-2">
+                <p class="text-sm text-gray-700">你好！我是你的AI营养师，可以帮你解答饮食搭配、营养摄入、食材选择等问题。比如："增肌期早餐怎么吃？"</p>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 border-t border-gray-100">
+            <div class="flex gap-2">
+              <input type="text" id="nutrition-chat-input" placeholder="输入你的问题..." class="flex-1 px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2EC4B6] text-gray-800">
+              <button onclick="sendNutritionChatMessage()" id="nutrition-chat-btn" class="px-4 py-2 bg-[#2EC4B6] text-white rounded-lg hover:bg-green-600 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 mt-12">
+      <div class="glass-card rounded-xl p-6 text-center">
+        <div class="w-12 h-12 bg-[#FF6B35]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-6 h-6 text-[#FF6B35]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+        </div>
+        <h3 class="font-bold text-lg mb-2">智能训练计划</h3>
+        <p class="text-gray-400 text-sm">基于身体状态、时间约束、训练目标，自动生成个性化训练方案</p>
+      </div>
+      <div class="glass-card rounded-xl p-6 text-center">
+        <div class="w-12 h-12 bg-[#2EC4B6]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-6 h-6 text-[#2EC4B6]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+        </div>
+        <h3 class="font-bold text-lg mb-2">营养精准测算</h3>
+        <p class="text-gray-400 text-sm">输入餐食内容，实时计算营养摄入，跟踪剩余营养素补充额度</p>
+      </div>
+      <div class="glass-card rounded-xl p-6 text-center">
+        <div class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+          </svg>
+        </div>
+        <h3 class="font-bold text-lg mb-2">平价专业服务</h3>
+        <p class="text-gray-400 text-sm">一杯咖啡的价格，享受专业级私教+营养师的双重服务</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-black/20 py-8 mt-12">
+    <div class="max-w-6xl mx-auto px-6 text-center text-gray-400">
+      <div class="flex items-center justify-center gap-3 mb-4">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+        </svg>
+        <span class="font-bold">随动私教</span>
+      </div>
+      <p class="text-sm">让专业健身指导触手可及</p>
+    </div>
+  </footer>
+
+  <!-- 数据层：动作库 / 食物库 / 问答库 -->
+  <script src="js/data.js"></script>
+  <!-- 逻辑层：训练生成 / 营养测算 / 问答交互 -->
+  <script src="js/app.js"></script>
+</body>
+</html>
